@@ -105,33 +105,6 @@ Notes importantes :
 - Ne pas ajouter `type="module"` manuellement au script tag (Vite le gere).
 - Le warning Vite >500 kB est normal (bundle Sveltia CMS).
 
-## Initialisation des valeurs par défaut (À faire avant toute utilisation)
-
-> **⚠️ À SUPPRIMER APRES INITIALISATION** : Cette section doit être supprimée une fois que toutes les valeurs par défaut ont été remplacées et validées.
-
-### Valeurs par défaut à initialiser pour Sveltia CMS
-
-Le fichier `public/admin/config.yml` contient des **valeurs par défaut génériques** qui **doivent être remplacées** avant le premier déploiement ou utilisation du projet. Voici la liste des variables à initialiser :
-
-| Variable | Valeur par défaut | Description | Exemple de valeur finale |
-|----------|-------------------|-------------|--------------------------|
-| `repo` | `USER/REPO_NAME` | Nom du dépôt Git hébergeant le contenu. | `LoicBabolat/mon-projet-cms` |
-| `branch` | `cms` | Branche Git dédiée au contenu (doit exister). | `main` ou `cms` |
-| `skip_ci` | `true` | Désactive les builds CI automatiques pour les commits de contenu. | `true` ou `false` |
-| `preview_context` | `cloudflare` | Contexte de prévisualisation pour les PR. | `cloudflare` ou `netlify` |
-
----
-
-#### Checklist d'initialisation
-- [ ] Remplacer `USER/REPO_NAME` dans `public/admin/config.yml` par le nom du dépôt Git réel.
-- [ ] Vérifier que la branche `branch` (ex: `cms`) existe dans le dépôt.
-- [ ] Adapter `skip_ci` si nécessaire (ex: `false` pour activer les builds CI).
-- [ ] Confirmer que `preview_context` correspond à l'hébergeur utilisé.
-- [ ] Tester localement avec `wrangler dev` et vérifier que `/admin/` charge la configuration.
-- [ ] **Supprimer cette section** du `PLAN.md` une fois l'initialisation terminée.
-
----
-
 ## Detail des etapes completes
 
 ### Etape 4 — Config Sveltia (Fait)

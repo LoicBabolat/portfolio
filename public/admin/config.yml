@@ -5,7 +5,7 @@
 # Voir TODO.md pour l'initialisation de USER/REPO_NAME et de la branche.
 backend:
   name: github
-  repo: LoicBabolat/git-cms-template
+  repo: LoicBabolat/portfolio
   branch: cms
   auth_methods: [token]
   skip_ci: true
