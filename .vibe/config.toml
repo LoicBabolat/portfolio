@@ -1,0 +1,15 @@
+# Configuration Vibe specifique au projet git_based_template
+# Chargee uniquement si le dossier est trusted (voir ~/.vibe/trusted_folders.toml)
+
+# --- MCP servers ---
+# Cloudflare Docs : serveur de documentation Cloudflare, acces public sans auth.
+[[mcp_servers]]
+name = "cloudflare-docs"
+transport = "streamable-http"
+url = "https://docs.mcp.cloudflare.com/mcp"
+
+# Astro Docs : serveur officiel de documentation Astro, acces public sans auth.
+[[mcp_servers]]
+name = "astro-docs"
+transport = "streamable-http"
+url = "https://mcp.docs.astro.build/mcp"

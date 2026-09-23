@@ -1,0 +1,140 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+
+# Backend GitHub, authentification par personal access token (bouton
+# "Sign In with Token"). OAuth desactive via auth_methods.
+# Voir TODO.md pour l'initialisation de USER/REPO_NAME et de la branche.
+backend:
+  name: github
+  repo: LoicBabolat/git-cms-template
+  branch: cms
+  auth_methods: [token]
+  skip_ci: true
+  preview_context: cloudflare
+
+# Les fichiers telecharges via le CMS sont stockes dans public/media/
+# et servis par Astro sous /media/ (dossier public/ = racine statique).
+media_folder: /public/media
+public_folder: /media
+
+collections:
+  # Collection cible pour le widget relation des posts.
+  - name: authors
+    label: Authors
+    label_singular: Author
+    folder: /src/content/authors
+    create: true
+    fields:
+      - { label: Name, name: name, widget: string }
+      - { label: Bio, name: bio, widget: text, required: false }
+
+  # Collection exhaustive : couvre tous les widgets Sveltia CMS.
+  # string, text, number, boolean, select, color, datetime, richtext,
+  # image, file, list, object, keyvalue, relation, code, map, compute,
+  # uuid, hidden.
+  - name: posts
+    preview_path: /posts/{{slug}}
+    label: Posts
+    label_singular: Post
+    folder: /src/content/posts
+    create: true
+    summary: '{{title}} ({{publish_date}})'
+    fields:
+      # string
+      - { label: Title, name: title, widget: string }
+      # text
+      - { label: Description, name: description, widget: text, required: false, maxlength: 300 }
+      # datetime
+      - { label: Publish Date, name: publish_date, widget: datetime, type: date, default: '{{now}}' }
+      # boolean
+      - { label: Draft, name: draft, widget: boolean, default: false, required: false }
+      # select
+      - label: Category
+        name: category
+        widget: select
+        options:
+          - { label: Tech, value: tech }
+          - { label: Design, value: design }
+          - { label: Culture, value: culture }
+        default: tech
+      # list (sous-champ unique : liste de strings)
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
+        field: { label: Tag, name: tag, widget: string }
+      # color
+      - { label: Accent Color, name: accent_color, widget: color, enableAlpha: true, allowInput: true, required: false }
+      # number
+      - { label: Rating, name: rating, widget: number, value_type: int, min: 0, max: 10, required: false }
+      # image
+      - { label: Cover Image, name: cover, widget: image, required: false }
+      # file
+      - { label: Attachment, name: attachment, widget: file, accept: application/pdf, required: false }
+      # map
+      - { label: Location, name: location, widget: map, type: Point, required: false }
+      # relation
+      - label: Author
+        name: author
+        widget: relation
+        collection: authors
+        value_field: name
+        search_fields: [name]
+        display_fields: [name]
+        required: false
+      # relation (auto-reference : lien interne vers un autre post.
+      # value_field par defaut = {{slug}} : on selectionne le post dans
+      # une liste et Sveltia stocke son slug ; le template Astro genere
+      # l'URL /posts/{slug}. Renommages/suppressions cascades par Sveltia.)
+      - label: Related Posts
+        name: related_posts
+        widget: relation
+        collection: posts
+        multiple: true
+        required: false
+        display_fields: ['{{title}}']
+        search_fields: ['{{title}}']
+        # Exclut le post en cours d'edition de la liste de selection.
+        filters:
+          - field: slug
+            values: ['{{slug}}']
+            exclude: true
+      # list (sous-champs multiples : liste d'objets)
+      - label: Links
+        name: links
+        widget: list
+        required: false
+        summary: '{{label}}'
+        fields:
+          - { label: Label, name: label, widget: string }
+          - { label: URL, name: url, widget: string, type: url }
+      # object
+      - label: Metadata
+        name: metadata
+        widget: object
+        required: false
+        summary: '{{language}}'
+        fields:
+          - { label: Language, name: language, widget: string, default: en }
+          - { label: Featured, name: featured, widget: boolean, default: false }
+      # keyvalue
+      - label: Stats
+        name: stats
+        widget: keyvalue
+        required: false
+        key_label: Metric
+        value_label: Value
+      # code
+      - label: Snippet
+        name: snippet
+        widget: code
+        default_language: js
+        required: false
+      # compute (lecture seule, calculee depuis les autres champs)
+      - { label: Rating Summary, name: rating_summary, widget: compute, value: 'Rated {{fields.rating}}/10' }
+      # richtext (alias du widget markdown) — le champ "body" d'une entree
+      # markdown est ecrit sous le front matter, pas dans la YAML.
+      - { label: Body, name: body, widget: richtext }
+      # uuid
+      - { label: UUID, name: uuid, widget: uuid, required: false }
+      # hidden
+      - { label: Layout, name: layout, widget: hidden, default: post }
