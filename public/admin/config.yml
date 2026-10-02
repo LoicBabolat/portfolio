@@ -9,7 +9,6 @@ backend:
   branch: cms
   auth_methods: [token]
   skip_ci: true
-  preview_context: cloudflare
 
 # Les fichiers telecharges via le CMS sont stockes dans public/media/
 # et servis par Astro sous /media/ (dossier public/ = racine statique).
@@ -26,6 +25,15 @@ collections:
     fields:
       - { label: Name, name: name, widget: string }
       - { label: Bio, name: bio, widget: text, required: false }
+
+  - name: projects
+    label: Projets
+    label_singular: Projet
+    folder: /src/content/projects
+    preview_path: /#{{slug}}
+    create: true
+    fields:
+      - { label: Title, name: title, widget: string, required: true }
 
   # Collection exhaustive : couvre tous les widgets Sveltia CMS.
   # string, text, number, boolean, select, color, datetime, richtext,

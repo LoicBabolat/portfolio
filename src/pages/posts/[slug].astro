@@ -26,10 +26,29 @@ const allPosts = await getCollection("posts", ({ data }) => !data.draft);
 const relatedPosts = data.related_posts
     .map((slug) => allPosts.find((p) => p.id === slug))
     .filter((p): p is (typeof allPosts)[number] => p !== undefined);
+
+const anim = {
+    old: {
+        name: "bump",
+        duration: "0.5s",
+        easing: "ease-in",
+        direction: "reverse",
+    },
+    new: {
+        name: "bump",
+        duration: "0.5s",
+        easing: "ease-in-out",
+    },
+};
+
+const customTransition = {
+    forwards: anim,
+    backwards: anim,
+};
 ---
 
 <Layout title={data.title}>
-    <main>
+    <main transition:animate={customTransition}>
         <article>
             <header>
                 <h1 class="text-red-600">{data.title}</h1>
@@ -159,6 +178,21 @@ const relatedPosts = data.related_posts
 </Layout>
 
 <style>
+    @keyframes bump {
+        0% {
+            opacity: 0;
+            transform: scale(1) translateX(200px);
+        }
+        50% {
+            opacity: 0.5;
+            transform: scale(1.1);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1) translateX(0);
+        }
+    }
+
     main {
         max-width: 42rem;
         margin: 0 auto;
