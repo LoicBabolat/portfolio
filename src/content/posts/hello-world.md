@@ -1,5 +1,5 @@
 ---
-title: Test github trigger cloudflare
+title: Mobile github trigger cloudflare
 description: Post d'exemple couvrant tous les widgets Sveltia CMS du template.
 publish_date: 2026-09-19
 draft: false
