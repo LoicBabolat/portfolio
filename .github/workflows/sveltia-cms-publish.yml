@@ -1,0 +1,17 @@
+name: Publish from CMS
+on:
+  repository_dispatch:
+    types: [sveltia-cms-publish]
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: cms   # la branche que construit Workers Builds
+      - run: |
+          git config user.name "cms-release-bot"
+          git commit --allow-empty -m "chore(release): $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push

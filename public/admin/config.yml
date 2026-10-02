@@ -9,7 +9,6 @@ backend:
   branch: cms
   auth_methods: [token]
   skip_ci: true
-  preview_context: cloudflare
 
 # Les fichiers telecharges via le CMS sont stockes dans public/media/
 # et servis par Astro sous /media/ (dossier public/ = racine statique).
