@@ -26,14 +26,74 @@ collections:
       - { label: Name, name: name, widget: string }
       - { label: Bio, name: bio, widget: text, required: false }
 
+  # Collection cible pour le widget relation des projets.
+  # Chaque skill : titre, label, icone et type (soft ou hard).
+  - name: skills
+    label: Skills
+    label_singular: Skill
+    folder: /src/content/skills
+    create: true
+    summary: '{{title}} ({{type}})'
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Label, name: label, widget: string }
+      - { label: Icon, name: icon, widget: image }
+      # select
+      - label: Type
+        name: type
+        widget: select
+        options:
+          - { label: Soft, value: soft }
+          - { label: Hard, value: hard }
+        default: hard
+
   - name: projects
     label: Projets
     label_singular: Projet
     folder: /src/content/projects
-    preview_path: /#{{slug}}
+    preview_path: /projects/{{slug}}
     create: true
+    summary: '{{title}}'
     fields:
+      # string
       - { label: Title, name: title, widget: string, required: true }
+      # text
+      - { label: Description, name: description, widget: text, required: false, maxlength: 300 }
+      # image : image principale, utilisee pour le format card
+      - { label: Cover Image, name: cover, widget: image, required: true }
+      # list (sous-champ unique) : galerie d'images de la page projet
+      - label: Images
+        name: images
+        label_singular: Image
+        widget: list
+        required: false
+        field: { label: Image, name: image, widget: image }
+      # list (sous-champs multiples) : liens affiches sous forme d'icone
+      # (GitHub, site en ligne, Figma...). Nombre illimite d'items.
+      - label: Links
+        name: links
+        label_singular: Link
+        widget: list
+        required: false
+        summary: '{{label}}'
+        thumbnail: icon
+        fields:
+          - { label: Label, name: label, widget: string }
+          - { label: URL, name: url, widget: string, type: url }
+          - { label: Icon, name: icon, widget: image }
+      # relation : skills utilises dans le projet.
+      # value_field par defaut = {{slug}} : Sveltia stocke le slug du
+      # skill ; renommages cascades geres par Sveltia.
+      - label: Skills
+        name: skills
+        widget: relation
+        collection: skills
+        multiple: true
+        required: false
+        display_fields: ['{{title}}']
+        search_fields: ['{{title}}']
+      # richtext : corps de la page projet (ecrit sous le front matter)
+      - { label: Body, name: body, widget: richtext }
 
   # Collection exhaustive : couvre tous les widgets Sveltia CMS.
   # string, text, number, boolean, select, color, datetime, richtext,
