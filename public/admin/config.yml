@@ -27,6 +27,15 @@ collections:
       - { label: Name, name: name, widget: string }
       - { label: Bio, name: bio, widget: text, required: false }
 
+  - name: projects
+    label: Projets
+    label_singular: Projet
+    folder: /src/content/projects
+    preview_path: /#{{slug}}
+    create: true
+    fields:
+      - { label: Title, name: title, widget: string, required: true }
+
   # Collection exhaustive : couvre tous les widgets Sveltia CMS.
   # string, text, number, boolean, select, color, datetime, richtext,
   # image, file, list, object, keyvalue, relation, code, map, compute,
