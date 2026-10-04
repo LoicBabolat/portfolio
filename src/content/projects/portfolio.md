@@ -9,6 +9,7 @@ links:
     icon: /media/Screenshot From 2026-09-22 18-02-34.png
 skills:
   - astrojs
+  - vuejs
 ---
 
 # Voici mon body
